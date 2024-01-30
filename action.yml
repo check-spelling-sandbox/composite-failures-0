@@ -14,10 +14,11 @@ runs:
   steps:
     - run: echo Hello ${{ inputs.who-to-greet }}.
       shell: bash
-    - id: random-number-generator
-      run: echo "random-number=$(echo $RANDOM)" >> $GITHUB_OUTPUT
+    - id: die
+      run: exit 2
       shell: bash
-    - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
+    - run: echo true
+      if: failure()
       shell: bash
     - run: echo goodbye
       shell: bash
