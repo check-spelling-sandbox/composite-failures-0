@@ -21,5 +21,7 @@ runs:
     - run: echo true
       if: failure()
       shell: bash
+    - if: failed() || succeeded()
+      run: echo step die outcome: ${{ steps.die.outcome }}
     - run: echo goodbye
       shell: bash
