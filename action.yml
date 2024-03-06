@@ -26,6 +26,6 @@ runs:
       run: |
         echo step die outcome:
       env:
-        out: ${{ toJSON(steps.die.outcome) }}
+        out: ${{ steps.die.outcome }}
     - run: echo goodbye
       shell: bash
