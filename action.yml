@@ -14,8 +14,8 @@ runs:
   steps:
     - run: echo Hello ${{ inputs.who-to-greet }}.
       shell: bash
-    - id: die
-      run: exit 2
+    - id: maybe-die
+      run: exit $(( $RANDOM % 2 ))
       shell: bash
       continue-on-error: true
     - run: echo true
@@ -24,8 +24,8 @@ runs:
     - if: failure() || success()
       shell: bash
       run: |
-        echo step die outcome: $out
+        echo step maybe-die outcome: $out
       env:
-        out: ${{ steps.die.outcome }}
+        out: ${{ steps.maybe-die.outcome }}
     - run: echo goodbye
       shell: bash
