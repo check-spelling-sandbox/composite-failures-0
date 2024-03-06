@@ -14,3 +14,13 @@ jobs:
 
       - name: Run action
         uses: ./
+      - name: Run action
+        uses: ./
+      - name: Run action
+        uses: ./
+      - name: Run action
+        uses: ./
+      - name: Run action
+        uses: ./
+      - name: Run action
+        uses: ./
