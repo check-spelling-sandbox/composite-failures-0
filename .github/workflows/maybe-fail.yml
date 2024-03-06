@@ -39,7 +39,7 @@ jobs:
             echo
           ) | tee -a "$GITHUB_STEP_SUMMARY"
       - name: If action failed
-        if: steps.maybe-fail.outcome == 'failure'
+        if: failure() && steps.maybe-fail.outcome == 'failure'
         run: |
           echo 'Something must be done because maybe-fail failed!' | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Next Step
