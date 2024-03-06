@@ -32,5 +32,5 @@ runs:
       if: success() || failure()
       run: echo "result=$outcome" | tee -a "$GITHUB_OUTPUT"
       env:
-        outcome: ${{ steps.continue-on-error-false.outcome || steps.continue-on-error-true.outcome }}
+        outcome: ${{ steps.continue-on-error-false.outcome != 'skipped' && steps.continue-on-error-false.outcome || steps.continue-on-error-true.outcome }}
       shell: bash
