@@ -18,7 +18,7 @@ runs:
   steps:
     - name: Call maybe fail
       id: maybe-fail
-      uses: ../maybe-fail
+      uses: ./maybe-fail
       with:
         return-code: ${{ inputs.return-code }}
         continue-on-error: ${{ inputs.continue-on-error }}
