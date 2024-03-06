@@ -12,7 +12,7 @@ jobs:
         return-code:
           - 0
           - 1
-        continue-on-failure:
+        continue-on-error:
           - true
           - false
       fail-fast: false
@@ -24,7 +24,7 @@ jobs:
         uses: ./maybe-fail
         with:
           return-code: ${{ matrix.return-code }}
-          continue-on-failure: ${{ matrix.continue-on-failure }}
+          continue-on-error: ${{ matrix.continue-on-error }}
       - name: After Action
         if: success() || failure()
         env:

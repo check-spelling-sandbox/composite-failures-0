@@ -5,8 +5,8 @@ inputs:
     description: 'Value to use as exit code for main step'
     required: false
     default: '0'
-  continue-on-failure:
-    description: 'Whether to run the main step with `continue-on-failure`'
+  continue-on-error:
+    description: 'Whether to run the main step with `continue-on-error`'
     required: false
     default: 'false'
 outputs:
@@ -16,21 +16,21 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: Run step if continue-on-failure = false
-      id: continue-on-failure-false
-      if: ${{ inputs.continue-on-failure == 'false' }}
-      continue-on-failure: false
+    - name: Run step if continue-on-error = false
+      id: continue-on-error-false
+      if: ${{ inputs.continue-on-error == 'false' }}
+      continue-on-error: false
       run: exit ${{ inputs.return-code }}
       shell: bash
-    - name: Run step if continue-on-failure != false
-      id: continue-on-failure-true
-      if: ${{ inputs.continue-on-failure != 'false' }}
-      continue-on-failure: true
+    - name: Run step if continue-on-error != false
+      id: continue-on-error-true
+      if: ${{ inputs.continue-on-error != 'false' }}
+      continue-on-error: true
       run: exit ${{ inputs.return-code }}
       shell: bash
     - id: report-outcome
-      if: success() || failed()
+      if: success() || failure()
       run: echo "result=$outcome" | tee -a $GITHUB_OUTPUTS
       env:
-        outcome: ${{ steps.continue-on-failure-false.outcome || steps.continue-on-failure-true.outcome }}
+        outcome: ${{ steps.continue-on-error-false.outcome || steps.continue-on-error-true.outcome }}
       shell: bash
