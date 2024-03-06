@@ -1,0 +1,29 @@
+name: 'Use maybe fail'
+description: 'Call maybe fail to conditionally fail based on inputs'
+inputs:
+  return-code:
+    description: 'Value to use as exit code for main step'
+    required: false
+    default: '0'
+  continue-on-error:
+    description: 'Whether to run the main step with `continue-on-error`'
+    required: false
+    default: 'false'
+outputs:
+  result:
+    description: "Result for posterity"
+    value: ${{ steps.maybe-fail.outputs.result }}
+runs:
+  using: "composite"
+  steps:
+    - name: Call maybe fail
+      id: maybe-fail
+      uses: ../maybe-fail
+      with:
+        return-code: ${{ inputs.return-code }}
+        continue-on-error: ${{ inputs.continue-on-error }}
+    - id: report-outcome
+      if: (success() || failure()) && steps.maybe-fail.outcome == 'failed'
+      run: |
+        echo 'Something must be done because maybe-fail failed!' | tee -a "$GITHUB_STEP_SUMMARY"
+      shell: bash
