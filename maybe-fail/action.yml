@@ -1,0 +1,36 @@
+name: 'Maybe fail'
+description: 'Conditionally fail based on inputs'
+inputs:
+  return-code:
+    description: 'Value to use as exit code for main step'
+    required: false
+    default: '0'
+  continue-on-failure:
+    description: 'Whether to run the main step with `continue-on-failure`'
+    required: false
+    default: 'false'
+outputs:
+  result:
+    description: "Result for posterity"
+    value: ${{ steps.report-outcome.outputs.result }}
+runs:
+  using: "composite"
+  steps:
+    - name: Run step if continue-on-failure = false
+      id: continue-on-failure-false
+      if: ${{ inputs.continue-on-failure == 'false' }}
+      continue-on-failure: false
+      run: exit ${{ inputs.return-code }}
+      shell: bash
+    - name: Run step if continue-on-failure != false
+      id: continue-on-failure-true
+      if: ${{ inputs.continue-on-failure != 'false' }}
+      continue-on-failure: true
+      run: exit ${{ inputs.return-code }}
+      shell: bash
+    - id: report-outcome
+      if: success() || failed()
+      run: echo "result=$outcome" | tee -a $GITHUB_OUTPUTS
+      env:
+        outcome: ${{ steps.continue-on-failure-false.outcome || steps.continue-on-failure-true.outcome }}
+      shell: bash
