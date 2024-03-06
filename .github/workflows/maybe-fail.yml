@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Use maybe-fail action
         id: maybe-fail
-        uses: ./call-maybe-fail
+        uses: ./use-maybe-fail
         with:
           return-code: ${{ matrix.return-code }}
           continue-on-error: ${{ matrix.continue-on-error }}
