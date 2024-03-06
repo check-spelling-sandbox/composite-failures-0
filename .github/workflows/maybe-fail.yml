@@ -5,7 +5,7 @@ on:
   pull_request:
   workflow_dispatch:
 jobs:
-  use-action:
+  use-action-without-fail-fast:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -16,6 +16,41 @@ jobs:
           - true
           - false
       fail-fast: false
+    name: Maybe fail
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use maybe-fail action
+        id: maybe-fail
+        uses: ./maybe-fail
+        with:
+          return-code: ${{ matrix.return-code }}
+          continue-on-error: ${{ matrix.continue-on-error }}
+      - name: After Action
+        if: success() || failure()
+        env:
+          conclusion: ${{ steps.maybe-fail.conclusion }}
+          outcome: ${{ steps.maybe-fail.outcome}}
+          result: ${{ steps.maybe-fail.outputs.result }}
+        run: |
+          (
+            echo "outcome: $outcome"
+            echo "conclusion: $conclusion"
+            echo "result: $result"
+            echo
+          ) | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Next Step
+        run:
+          echo Next step | tee -a "$GITHUB_STEP_SUMMARY"
+  use-action-with-fail-fast:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        return-code:
+          - 0
+          - 1
+        continue-on-error:
+          - true
+          - false
     name: Maybe fail
     steps:
       - uses: actions/checkout@v4
