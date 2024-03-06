@@ -23,7 +23,7 @@ runs:
         return-code: ${{ inputs.return-code }}
         continue-on-error: ${{ inputs.continue-on-error }}
     - id: report-outcome
-      if: (success() || failure()) && steps.maybe-fail.outcome == 'failed'
+      if: (success() || failure()) && steps.maybe-fail.outcome == 'failure'
       run: |
         echo 'Something must be done because maybe-fail failed!' | tee -a "$GITHUB_STEP_SUMMARY"
       shell: bash
