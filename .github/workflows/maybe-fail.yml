@@ -80,19 +80,3 @@ jobs:
       - name: Next Step
         run:
           echo Next step | tee -a "$GITHUB_STEP_SUMMARY"
-  basic-sleep:
-    runs-on: ubuntu-latest
-    steps:
-    - run: |
-        sleep 20
-    - run:
-        date
-  fancy-sleep:
-    runs-on: ubuntu-latest
-    steps:
-    - run: |
-        sleep 20
-    - run:
-        date
-    strategy:
-      fail-fast: false
