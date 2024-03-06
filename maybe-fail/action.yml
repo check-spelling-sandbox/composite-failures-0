@@ -30,7 +30,7 @@ runs:
       shell: bash
     - id: report-outcome
       if: success() || failure()
-      run: echo "result=$outcome" | tee -a $GITHUB_OUTPUTS
+      run: echo "result=$outcome" | tee -a "$GITHUB_OUTPUT"
       env:
         outcome: ${{ steps.continue-on-error-false.outcome || steps.continue-on-error-true.outcome }}
       shell: bash
