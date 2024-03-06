@@ -22,6 +22,8 @@ runs:
       if: failure()
       shell: bash
     - if: failed() || succeeded()
-      run: echo "step die outcome: ${{ toJSON(steps) }}"
+      run: echo "step die outcome:"
+      env:
+        js: ${{ toJSON(steps) }}
     - run: echo goodbye
       shell: bash
